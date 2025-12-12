@@ -3,7 +3,7 @@ import { Env } from "../config/Env";
 import { AppError } from "../core/errors/Apperror";
 export function generateAccessToken(userId:string,role:string)
 {
-  return jwt.sign({sub:userId,role}),Env.JWT_SECRET,{expiresIn:"15m"});
+  return jwt.sign({sub:userId,role},Env.JWT_SECRET,{expiresIn:"15m"});
 }
 export function generateRefreshToken(userId:string){
   return jwt.sign({sub:userId,type:"refresh"},process.Env.JWT_SECRET,{expiresIn:"7d"});

@@ -1,8 +1,8 @@
 import { createApp } from "./app";
-import { Env } from "./config/Env";
-import { db } from "./config/db/db";
-const app = createApp();
+import { Env } from "./config/Env.ts";
 
-app.listen(Env.PORT, () => {
-  console.log("Server running on port 5000");
+const app = createApp();
+const port=Env.PORT
+app.listen(port,()=>{
+  console.log(`server running on port ${port}`);
 });

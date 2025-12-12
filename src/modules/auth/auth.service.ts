@@ -5,7 +5,6 @@ import { generateAccessToken,generateRefreshToken,verifyRefreshToken } from "../
 import { RegisterInput,LoginInput } from "./auth.types"
 
 
-
 export async function register(input:RegisterInput)
 {
   const existing=await findUserByEmail(input.email);
@@ -21,4 +20,42 @@ export async function register(input:RegisterInput)
     email:input.email,
     passwordHash:hashedpassword.tostring()
   });
+
+  return {
+    id:user?.id,
+    email:user?.email,
+  }
+}
+
+export async function login(input:LoginInput)
+{
+  const user=await findUserByEmail(input.email)
+  
+  if(!user)
+  {
+    throw new AppError("InvalidCredentials","Invalid email or password",401)
+  }
+
+  const verify=await verifyPassword(input.password,user.passwordHash);
+
+  if(!verify)
+  {
+    throw new AppError("InvalidCredentials","Invalid email or password",401)
+  }
+
+  return {
+    accessToken:generateAccessToken(user.id,user.role),
+    refreshToken:generateRefreshToken(user.id)
+  }
+ 
+};
+
+export async function refresh(token:string)
+{
+  const userid=verifyRefreshToken(token);
+
+
+  return {
+    accessToken:generateAccessToken(userid,"user")
+  }
 }
