@@ -1,5 +1,5 @@
 import { createApp } from "./app";
-import { Env } from "./config/Env.ts";
+import { Env } from "./config/Env";
 
 const app = createApp();
 const port=Env.PORT

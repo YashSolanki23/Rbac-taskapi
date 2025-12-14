@@ -18,7 +18,7 @@ export async function register(input:RegisterInput)
 
   const user=await createUser({
     email:input.email,
-    passwordHash:hashedpassword.tostring()
+    passwordHash:hashedpassword
   });
 
   return {

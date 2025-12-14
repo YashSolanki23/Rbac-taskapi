@@ -7,7 +7,9 @@ res:Response,
 next:NextFunction
 ){
 try {
+console.log("register controller hit",req.body)
   const result=await AuthService.register(req.body);
+  console.log("body",req.body)
   res.status(201).json(result);
 } catch (err) {
   next(err);

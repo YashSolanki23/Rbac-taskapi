@@ -11,11 +11,10 @@ export const users = pgTable('users', {
   email: varchar("email", { length: 255 }).notNull().unique(),
   
 
-  passwordHash: varchar("password_hash", { length: 255 }).notNull(),
+  passwordHash: varchar("password", { length: 255 }).notNull(),
   
   
   role: varchar("role", { length: 32 }).notNull().default("user"),
   
-  Created_At: timestamp("created_at").defaultNow(),
-  Updated_At: timestamp("updated_at").defaultNow()
+  Created_At: timestamp("created_At").defaultNow()
 });

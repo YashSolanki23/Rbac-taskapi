@@ -6,7 +6,7 @@ export function generateAccessToken(userId:string,role:string)
   return jwt.sign({sub:userId,role},Env.JWT_SECRET,{expiresIn:"15m"});
 }
 export function generateRefreshToken(userId:string){
-  return jwt.sign({sub:userId,type:"refresh"},process.Env.JWT_SECRET,{expiresIn:"7d"});
+  return jwt.sign({sub:userId,type:"refresh"},Env.JWT_SECRET,{expiresIn:"7d"});
 }
 
 export function verifyRefreshToken(token:string)
