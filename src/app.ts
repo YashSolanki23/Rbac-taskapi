@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { errorHandler } from "./core/errors/errorHandler";
 import  authRoute from "./modules/auth/auth.routes"
+import adminRoute from "./modules/auth/admin-routes";
 
 export function createApp() {
  
@@ -14,7 +15,7 @@ export function createApp() {
   });
 
 app.use("/auth",authRoute)
-
+app.use("/admin",adminRoute);
 app.use(errorHandler)
 
   return app;

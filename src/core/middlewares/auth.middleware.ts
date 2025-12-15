@@ -3,6 +3,14 @@ import jwt from "jsonwebtoken";
 import { Env } from "../../config/Env"; 
 import { AppError } from "../errors/Apperror";
 
+export interface Authrequest extends Request
+{
+user?:{
+  id:string,
+  role:"user" | "admin";
+}
+}
+
 export function requireAuth(
   req:Request,
 res:Response,
