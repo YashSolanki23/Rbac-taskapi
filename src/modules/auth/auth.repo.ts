@@ -18,3 +18,15 @@ export async function createUser(data:{
 
   return user;
 }
+export async function getAllUsers(){
+
+  return db.query.users.findMany({
+    columns:{
+      id:true,
+      email:true,
+      role:true,
+      Created_At:true
+    }
+  })
+  
+}

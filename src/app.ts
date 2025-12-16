@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { errorHandler } from "./core/errors/errorHandler";
 import  authRoute from "./modules/auth/auth.routes"
-import adminRoute from "./modules/auth/admin-routes";
+import adminRoute from "./routes/admin-routes";
 
 export function createApp() {
  
