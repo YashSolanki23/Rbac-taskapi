@@ -10,6 +10,8 @@ export async function createTask(data:{
 return await db.insert(tasks).values(data).returning();
 }
 
+
+
 export async function findByUserId(userId:string) {
   return await db.select().from(tasks).where(eq(tasks.userId,userId));
 }
