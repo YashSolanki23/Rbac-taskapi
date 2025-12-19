@@ -6,7 +6,8 @@ import { createTaskController } from "../modules/tasks/task.controller";
 
 const TaskRouter=Router();
 
-TaskRouter.post("/",requireAuth,validate(createTaskSchema),createTaskController);
+TaskRouter.use(requireAuth)
+TaskRouter.post("/",validate(createTaskSchema),createTaskController);
 
 
 export default TaskRouter

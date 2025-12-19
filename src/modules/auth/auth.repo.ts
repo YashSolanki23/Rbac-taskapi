@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 
 export async function findUserByEmail(email:string)
 {
-  return db.query.users.findFirst({
+  return await db.query.users.findFirst({
     where:eq(users.email,email),
   })
 }
