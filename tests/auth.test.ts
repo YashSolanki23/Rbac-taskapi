@@ -26,6 +26,8 @@ describe("Auth Flow",()=>{
   expect(result.body).toHaveProperty("id");
   expect(result.body.email).toBe(user.email);
  });
+
+
 // logs in user
 it("logins in a user",async ()=>{
 const result=await request(app)
@@ -38,6 +40,8 @@ expect(result.body).toHaveProperty("refreshToken");
 
 refreshToken=result.body.refreshToken;
 });
+
+
 // refreshes access token
 it("refreshes access token",async ()=>{
   const result=await request(app)
@@ -72,5 +76,18 @@ expect(result.status).toBe(401);
 
 });
 
+
+});
+
+//wrong password
+it("Wrong password in a user",async ()=>{
+const result=await request(app)
+.post("/auth/login")
+.send({
+   email: `test_${Date.now()}@example.com`,
+  password: "123456789",
+});
+
+expect(result.status).toBe(401);
 
 });

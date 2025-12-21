@@ -8,26 +8,38 @@ export async function createTask(data:{
   priority?:string,
   userId:string
 }){
-return await db.insert(tasks).values(data).returning();
+const task= await db.insert(tasks).values(data).returning();
+
+return task
 }
 
 
 
 export async function findByUserId(userId:string) {
-  return await db.select().from(tasks).where(eq(tasks.userId,userId));
+
+  const task= await db.select().from(tasks).where(eq(tasks.userId,userId));
+ 
+  return task
 }
 
 
 export async function getTaskbyId(id:string,userId:string){
 
-return await db.select().from(tasks).where(and(eq(tasks.id,id),eq(tasks.userId,userId)))
+  const task=await db.select().from(tasks).where(and(eq(tasks.id,id),eq(tasks.userId,userId)));
+
+return task
 }
 
 export async function updateTask(id:string,userId:string,data:any){
 
-  return await db.update(tasks).set(data).where(and(eq(tasks.id,id),eq(tasks.userId,userId)))
+const update=await db.update(tasks).set({...data,updatedAt:new Date()}).where(and(eq(tasks.id,id),eq(tasks.userId,userId)))
+
+  return update;
 }
 
 export async function deleteTask(id:string ,userId:string){
-  return await db.delete(tasks).where(and(eq(tasks.id,id),eq(tasks.userId,userId)))
+
+  const delete_task= await db.delete(tasks).where(and(eq(tasks.id,id),eq(tasks.userId,userId)))
+
+  return delete_task;
 }
