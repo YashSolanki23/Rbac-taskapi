@@ -1,6 +1,8 @@
 import { db } from "../../config/db/db";
-import { eq,and } from "drizzle-orm";
+import { eq,and, ilike } from "drizzle-orm";
 import { tasks } from "../../config/db/schema/tasks";
+import ta from "zod/v4/locales/ta.js";
+import { off } from "process";
 
 export async function createTask(data:{
   title:string,
@@ -42,4 +44,55 @@ export async function deleteTask(id:string ,userId:string){
   const delete_task= await db.delete(tasks).where(and(eq(tasks.id,id),eq(tasks.userId,userId)))
 
   return delete_task;
+}
+
+export async function getTasksAdvanced({
+  userId,
+  search,
+  status,
+  priority,
+  page=1,
+  limit=10,
+  sortBy="createdAt",
+  order= "desc",
+}:{
+  userId:string,
+  search?:string,
+  status?:string,
+  priority?:string,
+  page?:number,
+  limit?:number,
+  sortBy?: "createdAt" | "updatedAt" | "title",
+  order?: "asc" | "desc"
+}){
+const conditions =[eq(tasks.userId,userId)];
+
+if(search){
+  conditions.push(
+    or(
+      ilike(tasks.title,`%${search}%`),
+      ilike(tasks.description,`%${search}%`)
+    )
+  );
+}
+
+if(status)
+{
+  conditions.push(eq(tasks.status,status))
+}
+
+if(priority)
+{
+  conditions.push(eq(tasks.priority,priority))
+}
+
+const offset=(page-1)*limit
+
+return db.select().from(tasks).where(and(...conditions))
+.orderBy(
+  order === "asc" ? asc(tasks[sortBy]) : desc(tasks[sortBy])
+).limit(limit)
+.offset(offset)
+
+
 }
