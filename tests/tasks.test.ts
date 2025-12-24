@@ -38,7 +38,6 @@ console.log(res.body)
 taskId=res.body.data[0].id
 });
 
-
 it("should fail without a title",async ()=>{
   const res=await request(app)
     .post("/tasks/createtask")
@@ -51,24 +50,36 @@ it("should fail without a title",async ()=>{
 })
 
 
-it("should list user tasks",async ()=>{
-const res=await request(app)
-.get("/tasks")
-.set("Authorization", `Bearer ${token}`)
 
-expect(res.status).toBe(200)
-expect(Array.isArray(res.body.data)).toBe(true);
-})
+it("should update a task", async () => {
 
-it("should update a task",async ()=>{
-  const res=await request(app)
-  .patch(`/tasks/${taskId}`)
-  .set("Authorization", `Bearer ${token}`)
-  .send({
-    status:"completed"
-  });
-console.log(res.body);
+  const res = await request(app)
+    .patch(`/tasks/${taskId}`)
+    .set("Authorization", `Bearer ${token}`)
+    .send({
+      status: "completed",
+    });
+
+  console.log(res.body);
+
+  expect(res.status).toBe(200);
+  expect(res.body.data.status).toBe("completed");
+});
+
+it("should delete a task",async ()=>{
+const res = await request(app)
+    .delete(`/tasks/${taskId}`)
+    .set("Authorization", `Bearer ${token}`)
 expect(res.status).toBe(200);
-expect(res.body.data.status).toBe("completed")
-
+expect(res.body.message).toBe("task deleted")
 })
+
+it("should list task",async ()=>{
+  const res=await request(app)
+  .get('/tasks/')
+  .set("Authorization", `Bearer ${token}`)
+
+  expect(res.status).toBe(200)
+  expect(Array.isArray(res.body.data)).toBe(true);
+})
+

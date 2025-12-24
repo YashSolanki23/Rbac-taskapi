@@ -32,16 +32,17 @@ return task
 
 export async function updateTask(id:string,userId:string,data:any){
 
-const update=await db.update(tasks).set({...data,updatedAt:new Date()}).where(and(eq(tasks.id,id),eq(tasks.userId,userId)))
+const update=await db.update(tasks).set({...data,updatedAt:new Date()}).where(and(eq(tasks.id,id),eq(tasks.userId,userId))).returning()
 
-  return update;
+  return update[0];
 }
 
 export async function deleteTask(id:string ,userId:string){
 
-  const delete_task= await db.delete(tasks).where(and(eq(tasks.id,id),eq(tasks.userId,userId)))
+ const [delete_task]=await db.delete(tasks).where(and(eq(tasks.id,id),eq(tasks.userId,userId))).returning()
 
-  return delete_task;
+ return delete_task
+
 }
 
 export async function getTasksAdvanced({

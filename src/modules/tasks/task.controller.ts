@@ -7,7 +7,7 @@ import {
   deleteTaskService,
   getTasksAdvancedService,
 } from "./task.service";
-
+import { AppError } from "../../core/errors/Apperror";
 
 export async function createTaskController(
   req: Request,
@@ -73,10 +73,16 @@ export async function updateTaskController(
   try {
     const userId = req.user.id;
     const taskId = req.params.id;
+console.log("TASK ID PARAM:", req.params.id);
+console.log("USER ID FROM TOKEN:", req.user.id);
 
     const task = await updateTaskService(taskId, userId, req.body);
 
-    res.status(200).json({
+if (!task) {
+    throw new AppError("NotFound", "Task not Found", 404);
+  }
+
+    return res.status(200).json({
       message: "Task updated",
       data: task,
     });
@@ -95,9 +101,16 @@ export async function deleteTaskController(
     const userId = req.user.id;
     const taskId = req.params.id;
 
-    await deleteTaskService(taskId, userId);
+const deletedTask= await deleteTaskService(taskId, userId);
 
-    res.status(204).send();
+
+  if (!deletedTask) {
+    throw new AppError("NotFound", "Task not Found", 404);
+  }
+
+    res.json({
+     message:"task deleted"
+    })
   } catch (err) {
     next(err);
   }
