@@ -2,6 +2,7 @@ import request from "supertest"
 import {describe,it,beforeAll, expect} from "vitest"
 import { createApp } from "../src/app"
 import e from "express";
+import { StringValidation } from "zod/v3";
 
 
 const app=createApp();
@@ -13,7 +14,8 @@ const user = {
 
 
 let refreshToken:string;
-
+let userid:string;
+let role:string;
 
 describe("Auth Flow",()=>{
 // registration of user
@@ -34,12 +36,13 @@ it("logins in a user",async ()=>{
 const result=await request(app)
 .post("/auth/login")
 .send(user);
-
+console.log(result.body);
 expect(result.status).toBe(200);
 expect(result.body).toHaveProperty("accessToken");
 expect(result.body).toHaveProperty("refreshToken");
 
 refreshToken=result.body.refreshToken;
+
 });
 
 
@@ -91,4 +94,13 @@ const result=await request(app)
 
 expect(result.status).toBe(401);
 
+});
+
+it("update the role of user",async ()=>{
+  const result=request(app)
+  .patch("/users/:id/:role")
+  .send({
+    
+  })
+  
 });

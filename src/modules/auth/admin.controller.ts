@@ -1,5 +1,6 @@
 import { Request,Response,NextFunction } from "express";
-import { getAllUsers,updateUserById,deleteUserById } from "./auth.repo";
+import { getAllUsers,updateUserById,deleteUserById, UpdateUserRole } from "./auth.repo";
+import { AppError } from "../../core/errors/Apperror";
 
 
 export async function getUsersController(
@@ -52,3 +53,23 @@ export async function deleteUserController(
   }
 }
 
+export async function updateUserRoleController(
+    req:Request,
+  res:Response,
+  next:NextFunction
+){
+  try {
+    const {id}=req.params
+    const {role}=req.body
+
+    const Alluser=await UpdateUserRole(id,role);
+  
+    if(!Alluser)
+    {
+      throw new AppError("not found","forbidden",404)
+    }
+
+  } catch (err) {
+    next(err)
+  }
+}

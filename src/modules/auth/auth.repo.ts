@@ -55,7 +55,10 @@ export async function UpdateUserRole(req:Request,res:Response)
    const {id}=req.params;
     const {role}=req.body;
 
-    await db.update(users).set({role}).where(eq(users.id,id));
+   const userinfo= await db.update(users).set({role}).where(eq(users.id,id));
  
-    res.status(204).send();
+    return res.send({
+      status:"user role updated",
+      msg:userinfo
+    });
 }
