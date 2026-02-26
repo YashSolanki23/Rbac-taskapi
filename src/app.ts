@@ -5,6 +5,8 @@ import  authRoute from "./routes/auth.routes";
 import adminRoute from "./routes/admin-routes";
 import { rateLimiter } from "./core/middlewares/rateLimit.middleware";
 import TaskRouter from "./routes/task.routes";
+import timingMiddleware from "./core/middlewares/timingMiddleware";
+import globalError from "./core/middlewares/globalerrorhandlerlogs";
 
 export function createApp() {
  
@@ -15,17 +17,8 @@ export function createApp() {
   app.use(cors());
   app.use(express.json());
 
-  app.use((req,res,next)=>{
-    const start=Date.now();
-
-    res.on("finish",()=>{
-      const duration=Date.now()-start;
-
-      console.log(`${req.method}${req.originalUrl} -> ${duration}ms`);
-    });
-    next();
-  });
-
+  app.use(timingMiddleware);
+   app.use(globalError)
   app.get("/api/health", (req, res) => {
     res.json({ 
       health: "ok",
