@@ -1,4 +1,4 @@
-import { requestCounter,requestDuration} from '../../metrics'
+import { requestCounter,requestDuration,  errorCounter     } from '../../metrics'
 import { Request, Response, NextFunction } from 'express';
 
 export const metricsMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -6,6 +6,10 @@ export const metricsMiddleware = (req: Request, res: Response, next: NextFunctio
   res.on("finish", () => {
     requestCounter.inc();
     requestDuration.observe(Date.now() - start);
+
+       if(res.statusCode >=400){
+        errorCounter.inc();
+       }
   });
   next();
 };

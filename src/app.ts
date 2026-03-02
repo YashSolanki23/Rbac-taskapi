@@ -5,11 +5,11 @@ import  authRoute from "./routes/auth.routes";
 import adminRoute from "./routes/admin-routes";
 import { rateLimiter } from "./core/middlewares/rateLimit.middleware";
 import TaskRouter from "./routes/task.routes";
-import timingMiddleware from "./core/middlewares/timingMiddleware";
 import globalError from "./core/middlewares/globalerrorhandlerlogs";
 import { uptime } from "process";
-import { requestCounter, requestDuration, register } from "./metrics";
+import { requestCounter, requestDuration, register, errorCounter } from "./metrics";
 import { metricsMiddleware } from "./core/middlewares/metrics.middleware";
+import { start } from "repl";
 
 
 export function createApp() {
@@ -27,20 +27,8 @@ export function createApp() {
 //prometheus metrics
 app.use(metricsMiddleware);
 
-//request error count basic
-  app.use((req,res,next)=>{
-    requestCount++;
 
-  res.on("finish",()=>{
-   
-    if(res.statusCode >=400){
-      errorCount++;
-    }
-  });
-
-  next();
-  })
-
+  
 
   app.get("/metrics",async(req,res)=>{
     

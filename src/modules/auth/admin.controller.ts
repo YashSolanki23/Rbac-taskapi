@@ -53,3 +53,20 @@ export async function deleteUserController(
   }
 }
 
+export async function updateUserRoleController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    const user = await UpdateUserRole(id, role);
+
+    return res.status(200).json(user);
+  } catch (error: any) {
+    return res.status(400).json({
+      message: error.message || "Something went wrong",
+    });
+  }
+}

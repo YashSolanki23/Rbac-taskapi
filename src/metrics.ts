@@ -17,3 +17,9 @@ export const requestDuration = new client.Histogram({
   buckets:[10,50,100,300,500,1000],
   registers:[register]
 });
+
+export const errorCounter = new client.Counter({
+  name:"http_errors__total",
+  help:"Total HTTP errors",
+  registers:[register]
+})

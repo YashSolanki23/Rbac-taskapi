@@ -49,3 +49,13 @@ export async function deleteUserById(id:string)
   await db.delete(users).where(eq(users.id,id));
 }
 
+export async function updateUserRole(
+  id:string,
+  role:string
+){
+
+  const [user]= await db.update(users).set({role}).where(eq(users.id,id)).returning();
+
+  return user;
+  
+}
