@@ -6,17 +6,13 @@ import adminRoute from "./routes/admin-routes";
 import { rateLimiter } from "./core/middlewares/rateLimit.middleware";
 import TaskRouter from "./routes/task.routes";
 import globalError from "./core/middlewares/globalerrorhandlerlogs";
-import { uptime } from "process";
-import { requestCounter, requestDuration, register, errorCounter } from "./metrics";
+import {  register } from "./metrics";
 import { metricsMiddleware } from "./core/middlewares/metrics.middleware";
-import { start } from "repl";
 
 
 export function createApp() {
 
   const app = express();
-  let requestCount=0;
-  let errorCount=0;
  
 
   app.use(cors());
